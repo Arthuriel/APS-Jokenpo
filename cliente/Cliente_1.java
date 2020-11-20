@@ -2,6 +2,7 @@ package cliente;
 
 import java.net.Socket;
 import java.util.Scanner;
+import java.io.IOException;
 
 import util.Comunicacao;
 import util.Requisicao;
@@ -10,12 +11,12 @@ import util.Resposta;
 public class Cliente_1 {
     final static int PORTA = 9876;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scanner teclado = new Scanner(System.in);
         Socket clienteSocket;
         int num;
         int opc;
-        int rejoga=1;
+        int rejoga = 1;
 
         System.out.println("Escolha uma das opções abaixo para jogar:");
         System.out.println("1-Player vs CPU");
@@ -44,7 +45,7 @@ public class Cliente_1 {
                 System.out.println("======>");
                 num = teclado.nextInt();
 
-                Requisicao requisicao = new Requisicao (num, rejoga);
+                Requisicao requisicao = new Requisicao(num, rejoga);
                 Comunicacao comunicacao = new Comunicacao(clienteSocket);
 
                 comunicacao.send(requisicao);
@@ -71,18 +72,16 @@ public class Cliente_1 {
                     System.out.println("2-Não");
                     System.out.println("===========>");
                     rejoga = teclado.nextInt();
-                    System.out.println("VAlor2 de rejoga é" + rejoga);
-                    
-                    //requisicao.setRejoga(rejoga);
+                    System.out.println("Valor2 de rejoga é" + rejoga);
 
-                    
+                    // requisicao.setRejoga(rejoga);
+
                 } while (rejoga < 1 || rejoga > 2);
 
-                if(rejoga==2){
+                if (rejoga == 2) {
                     try {
                         Thread.sleep(5000);
-
-                        clienteSocket.close();
+                        // clienteSocket.close();
                         System.out.println("VAlor de rejoga é " + rejoga);
                     } catch (Exception e) {
                         System.out.println("Erro ao fechar conexão: " + e.getMessage());
@@ -94,7 +93,68 @@ public class Cliente_1 {
         }
 
         else if (opc == 2) {
+            int v1, v2;
 
+            System.out.println("Escolha entre 0, 1 e 2 , sendo : ");
+            System.out.println("Pedra = 0 ");
+            System.out.println("Papel = 1  ");
+            System.out.println("Tesoura = 2");
+
+            System.out.println("Jogador 1: ");
+            v1 = teclado.nextInt();
+
+            System.out.println("Jogador 2: ");
+            v2 = teclado.nextInt();
+
+            switch (v1) {
+                case 0:
+                    switch (v2) {
+                        case 0:
+                            System.out.println("Empate");
+                            break;
+                        case 1:
+                            System.out.println("Jogador 2 ganhou");
+                            break;
+                        case 2:
+                            System.out.println("Jogador 1 ganhou");
+                            break;
+                        default:
+                            System.out.println("USUARIO BURRO DO CARALHO");
+                    }
+                    break;
+                case 1:
+                    switch (v2) {
+                        case 0:
+                            System.out.println("Jogador 1 ganhou");
+                            break;
+                        case 1:
+                            System.out.println(" Empatou");
+                            break;
+                        case 2:
+                            System.out.println("Jogador 2 ganhou");
+                            break;
+                        default:
+                            System.out.println("USUARIO BURRO DO CARALHO");
+                    }
+                    break;
+                case 2:
+                    switch (v2) {
+                        case 0:
+                            System.out.println("Jogador 2 ganhou");
+                            break;
+                        case 1:
+                            System.out.println("Jogador 1 ganhou");
+                            break;
+                        case 2:
+                            System.out.println("Empate");
+                            break;
+                        default:
+                            System.out.println("USUARIO BURRO DO CARALHO");
+                    }
+                    break;
+                default:
+                    System.out.println("USUARIO BURRO DO CARALHO");
+            }
         }
     }
 
