@@ -16,48 +16,53 @@ public class Cliente_1 {
         Socket clienteSocket;
         int num;
         int opc;
-        int rejoga = 1;
+        int rejoga = 0;
+        int ganhos = 0;
+        int perdas = 0;
+        int empates = 0;
 
+        System.out.println("========================================");
         System.out.println("Escolha uma das opções abaixo para jogar:");
-        System.out.println("1-Player vs CPU");
-        System.out.println("2-Player vs Player");
-        System.out.println("3-Sair");
+        System.out.println("Player vs CPU = 1");
+        System.out.println("Player vs Player = 2");
+        System.out.println("Sair = 3");
         System.out.println("======>");
         opc = teclado.nextInt();
 
         if (opc == 1) {
-
             while (rejoga != 2) {
-
                 try {
-                    System.out.println("Conectando ao servidor...");
                     clienteSocket = new Socket("127.0.1", PORTA);
                 } catch (Exception e) {
                     System.out.println("Falha ao conectar com o servidor.");
                     teclado.close();
                     return;
                 }
-
+                
+                System.out.println("========================================");
                 System.out.println("Selecione sua jogada:");
-                System.out.println("1-Pedra");
-                System.out.println("2-Tesoura");
-                System.out.println("3-Papel");
+                System.out.println("Pedra = 1");
+                System.out.println("Tesoura = 2");
+                System.out.println("Papel = 3");
                 System.out.println("======>");
                 num = teclado.nextInt();
 
-                Requisicao requisicao = new Requisicao(num, rejoga);
+                Requisicao requisicao = new Requisicao(num);
                 Comunicacao comunicacao = new Comunicacao(clienteSocket);
 
                 comunicacao.send(requisicao);
                 Resposta resposta = (Resposta) comunicacao.receive();
 
                 if (resposta.getStatus() == Resposta.Empatou) {
+                    empates++;
                     System.out.println("Você empatou");
                     System.out.println("A máquina jogou: " + resposta.getResultado());
                 } else if (resposta.getStatus() == Resposta.Ganhou) {
+                    ganhos++;
                     System.out.println("Você ganhou.");
                     System.out.println("A máquina jogou: " + resposta.getResultado());
                 } else if (resposta.getStatus() == Resposta.Perdeu) {
+                    perdas++;
                     System.out.println("Você perdeu.");
                     System.out.println("A máquina jogou: " + resposta.getResultado());
                 } else if (resposta.getStatus() == Resposta.operador_invalido) {
@@ -65,40 +70,42 @@ public class Cliente_1 {
                 } else
                     System.out.println("Erro genérico.");
 
-                do {
-                    System.out.println("======================");
-                    System.out.println("Deseja jogar novamente?");
-                    System.out.println("1-Sim");
-                    System.out.println("2-Não");
-                    System.out.println("===========>");
-                    rejoga = teclado.nextInt();
-                    System.out.println("Valor2 de rejoga é" + rejoga);
-
-                    // requisicao.setRejoga(rejoga);
-
-                } while (rejoga < 1 || rejoga > 2);
-
                 if (rejoga == 2) {
                     try {
-                        Thread.sleep(5000);
-                        // clienteSocket.close();
-                        System.out.println("VAlor de rejoga é " + rejoga);
+                        clienteSocket.close();
+
                     } catch (Exception e) {
                         System.out.println("Erro ao fechar conexão: " + e.getMessage());
                     }
                 }
+                do {
+                    System.out.println("========================================");
+                    System.out.println("Deseja jogar novamente?");
+                    System.out.println("1-Sim");
+                    System.out.println("2-Não");
+                    System.out.println("======>");
+                    rejoga = teclado.nextInt();
+                    if (rejoga < 1 || rejoga > 2) {
+                        System.out.println("Digíto inválido, digite novamente!");
+                    }
+                } while (rejoga < 1 || rejoga > 2);
 
             }
+            System.out.println("Você ganhou " + ganhos + " vezes!");
+            System.out.println("Você perdeu " + perdas + " vezes!");
+            System.out.println("Você empatou " + empates + " vezes!");
             teclado.close();
         }
 
         else if (opc == 2) {
             int v1, v2;
 
-            System.out.println("Escolha entre 0, 1 e 2 , sendo : ");
-            System.out.println("Pedra = 0 ");
-            System.out.println("Papel = 1  ");
-            System.out.println("Tesoura = 2");
+            System.out.println("Selecione sua jogada:");
+            System.out.println("1-Pedra");
+            System.out.println("2-Tesoura");
+            System.out.println("3-Papel");
+            System.out.println("======>");
+            num = teclado.nextInt();
 
             System.out.println("Jogador 1: ");
             v1 = teclado.nextInt();

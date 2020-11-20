@@ -12,22 +12,13 @@ public class Requisicao implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int num;
-    private int rejoga;
 
-    public Requisicao(int num, int rejoga) {
+    public Requisicao(int num) {
         this.num = num;
-        this.rejoga = rejoga;
     }
 
-    public Requisicao(int rejoga) {
-        this.rejoga = rejoga;
-    }
-    
+
     public int getRequisicao() {
         return num;
-    }
-   
-    public int getRejoga() {
-        return rejoga;
     }
 }
